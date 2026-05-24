@@ -1,0 +1,2813 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 19th Birthday, Bervelyn! 🥂</title>
+    <!-- [OFFLINE READY] Local Font Definitions -->
+    <style>
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('Montserrat[wght].ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pinyon Script';
+            src: url('PinyonScript-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Cormorant Garamond';
+            src: url('CormorantGaramond[wght].ttf') format('truetype');
+            font-weight: 300 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    <style>
+        /* ==========================================================================
+           1. CORE DESIGN SETUP & LUXURY TOKENS
+           ========================================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --font-signature: 'Pinyon Script', cursive;
+
+            /* Curated Romantic Palette */
+            --velvet-night: #0b080f;
+            --satin-champagne: #faf6f0;
+            --rose-gold: #e5b3a3;
+            --blush-pink: #fdf5f3;
+            --text-dark: #2c2523;
+            --text-muted: #726966;
+            --gold-accent: #d4af37;
+        }
+
+        body {
+            background-color: var(--velvet-night);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            transition: background-color 2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: none;
+            /* Hide default cursor */
+        }
+
+        body.scroll-locked {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        body.celebrate-active {
+            background-color: var(--satin-champagne);
+        }
+
+        /* [NEW] DREAM SEQUENCE COLOR STATES */
+        body.theme-hero {
+            background-color: var(--satin-champagne);
+        }
+
+        body.theme-about {
+            background-color: #f5ebe0;
+        }
+
+        body.theme-chat {
+            background-color: #f2e9e4;
+        }
+
+        body.theme-gallery {
+            background-color: var(--blush-pink);
+        }
+
+        /* Ambient Floating Particle Canvas Background */
+        canvas#space-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            /* pointer-events: none; - REMOVED so we can click hearts */
+            transition: opacity 2s ease;
+        }
+
+        body.celebrate-active canvas#space-canvas {
+            opacity: 0;
+        }
+
+        /* ==========================================================================
+           2. GLOBAL NAVIGATION BAR (DYNAMIC COLOUR RESPONSIVE)
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 5rem;
+            z-index: 1000;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.celebrate-active header {
+            opacity: 1;
+            pointer-events: auto;
+            background: rgba(250, 246, 240, 0.8);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+            transition: color 1.5s;
+        }
+
+        .logo span {
+            font-family: var(--font-signature);
+            color: var(--rose-gold);
+            font-size: 1.8rem;
+            margin-left: 0.3rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        /* [NEW] PREMIUM HAMBURGER MENU */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 3500;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(229, 179, 163, 0.15);
+        }
+
+        .mobile-toggle span {
+            display: block;
+            height: 1.5px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 2px;
+            transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            transform-origin: center;
+        }
+
+        .mobile-toggle span:nth-child(1) { width: 22px; }
+        .mobile-toggle span:nth-child(2) { width: 14px; align-self: flex-end; }
+
+        body.celebrate-active .mobile-toggle span {
+            background: rgba(44, 37, 35, 0.7);
+        }
+
+        .mobile-toggle.active span:nth-child(1) {
+            width: 20px;
+            transform: rotate(45deg) translate(4px, 4px);
+            background: var(--rose-gold);
+        }
+        .mobile-toggle.active span:nth-child(2) {
+            width: 20px;
+            transform: rotate(-45deg) translate(4px, -4px);
+            align-self: auto;
+            background: var(--rose-gold);
+        }
+
+        /* [NEW] FULL-SCREEN NAV OVERLAY */
+        #mobile-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            background: rgba(11, 8, 15, 0.97);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #mobile-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .overlay-nav-link {
+            display: block;
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.15);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            padding: 0.8rem 2rem;
+            text-align: center;
+            transition: color 0.3s ease, letter-spacing 0.4s ease;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.5s ease, color 0.3s ease;
+        }
+
+        #mobile-overlay.active .overlay-nav-link {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #mobile-overlay.active .overlay-nav-link:nth-child(1) { transition-delay: 0.1s; }
+        #mobile-overlay.active .overlay-nav-link:nth-child(2) { transition-delay: 0.18s; }
+        #mobile-overlay.active .overlay-nav-link:nth-child(3) { transition-delay: 0.26s; }
+        #mobile-overlay.active .overlay-nav-link:nth-child(4) { transition-delay: 0.34s; }
+
+        .overlay-nav-link:hover {
+            color: var(--rose-gold);
+            letter-spacing: 0.06em;
+        }
+
+        .overlay-divider {
+            width: 40px;
+            height: 1px;
+            background: rgba(229, 179, 163, 0.3);
+            margin: 1.5rem auto;
+            opacity: 0;
+            transform: scaleX(0);
+            transition: transform 0.5s 0.3s ease, opacity 0.5s 0.3s ease;
+        }
+
+        #mobile-overlay.active .overlay-divider {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        .overlay-signature {
+            font-family: var(--font-signature);
+            font-size: 2rem;
+            color: var(--rose-gold);
+            opacity: 0;
+            margin-top: 2rem;
+            transition: opacity 0.5s 0.45s ease;
+        }
+
+        #mobile-overlay.active .overlay-signature {
+            opacity: 0.6;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            font-weight: 400;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--rose-gold);
+            transform: translateY(-1px);
+        }
+
+        .btn-msg {
+            background: transparent;
+            color: #ffffff;
+            padding: 0.8rem 2.2rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        nav a,
+        .btn-msg,
+        .btn-recipe-trigger,
+        .modal-close,
+        .gallery-close,
+        .grid-item,
+        .slider-card {
+            cursor: none !important;
+        }
+
+        .btn-msg:hover {
+            background: #ffffff;
+            color: var(--velvet-night);
+            border-color: #ffffff;
+        }
+
+        /* UI Skin morphs smoothly once the bloom triggers */
+        body.celebrate-active header .logo {
+            color: var(--text-dark);
+        }
+
+        body.celebrate-active nav a {
+            color: var(--text-muted);
+        }
+
+        body.celebrate-active nav a:hover {
+            color: var(--text-dark);
+        }
+
+        body.celebrate-active .btn-msg {
+            border-color: var(--text-dark);
+            color: var(--text-dark);
+        }
+
+        body.celebrate-active .btn-msg:hover {
+            background: var(--text-dark);
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           3. SCREEN 1: PRE-CELEBRATION TIME LOCK (ANTIGRAVITY PHYSICS)
+           ========================================================================== */
+        #countdown-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            transition: opacity 1.6s cubic-bezier(0.76, 0, 0.24, 1),
+                transform 1.6s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        #countdown-screen.vanished {
+            opacity: 0;
+            transform: translateY(-80px) scale(0.96);
+            pointer-events: none;
+        }
+
+        /* 3D Space Elements (Diamonds/Crystals) */
+        .crystal-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 2;
+            perspective: 1200px;
+        }
+
+        .crystal {
+            position: absolute;
+            width: 5px;
+            height: 10px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(229, 179, 163, 0.4));
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            transform-style: preserve-3d;
+            animation: crystalFloat 8s linear infinite;
+        }
+
+        .sub-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            color: var(--gold-accent);
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .countdown-title {
+            color: #ffffff;
+            font-family: var(--font-serif);
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-align: center;
+            letter-spacing: 0.01em;
+        }
+
+        .countdown-title span {
+            font-style: italic;
+            color: var(--rose-gold);
+        }
+
+        .countdown-subtitle {
+            color: #a8a2ad;
+            /* Brighter, more legible silver-purple */
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.2rem;
+            margin-bottom: 4.5rem;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+            width: 90%;
+            max-width: 850px;
+        }
+
+        .time-card {
+            background: rgba(255, 255, 255, 0.05);
+            /* Increased luminosity */
+            border: 1px solid rgba(229, 179, 163, 0.25);
+            /* More defined border */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 28px;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: transform 0.1s ease-out;
+            /* Smooth 3D Tilt */
+            transform-style: preserve-3d;
+        }
+
+        .time-val {
+            transform: translateZ(40px);
+            /* Lift numbers in 3D */
+        }
+
+        .time-lbl {
+            transform: translateZ(20px);
+        }
+
+        /* Fine-tuned slow drift floating metrics */
+        .time-card:nth-child(1) {
+            animation: floatDriftA 4s ease-in-out infinite alternate;
+        }
+
+        .time-card:nth-child(2) {
+            animation: floatDriftB 5s ease-in-out infinite alternate;
+        }
+
+        .time-card:nth-child(3) {
+            animation: floatDriftC 4.5s ease-in-out infinite alternate;
+        }
+
+        .time-card:nth-child(4) {
+            animation: floatDriftD 5.5s ease-in-out infinite alternate;
+        }
+
+        .time-val {
+            font-size: 5rem;
+            font-weight: 200;
+            /* Ultra-thin elegant typography styling */
+            color: #ffffff;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+            /* Luminous glow */
+        }
+
+        .time-lbl {
+            font-size: 0.7rem;
+            color: #b5acbd;
+            /* Lightened for better contrast */
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-weight: 400;
+        }
+
+        .decorative-shimmer {
+            font-size: 1.2rem;
+            color: var(--rose-gold);
+            margin-top: 5rem;
+            opacity: 0.4;
+            letter-spacing: 0.5em;
+            animation: pulseFade 3s infinite ease-in-out;
+        }
+
+        /* ==========================================================================
+           4. SCREEN 2: CELEBRATION MAIN DISCOVERY PLATFORM
+           ========================================================================== */
+        #main-content {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 2.5s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+            padding-top: 140px;
+        }
+
+        body.celebrate-active #main-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* HERO HEADER SECTION */
+        .hero-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 5rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .hero-text {
+            flex: 1.1;
+            padding-right: 5rem;
+        }
+
+        .badge-years {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--rose-gold);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .hero-text h1 {
+            font-size: 5.5rem;
+            color: var(--text-dark);
+            font-family: var(--font-serif);
+            line-height: 1.05;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            line-height: 1.9;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .hero-graphic {
+            flex: 0.9;
+            display: flex;
+            justify-content: center;
+        }
+
+        .graphic-frame {
+            width: 440px;
+            height: 540px;
+            border-radius: 220px 220px 40px 220px;
+            background: url('1.jpeg') center/cover;
+            box-shadow: 0 40px 90px rgba(44, 37, 35, 0.08);
+            animation: softNodeFloat 8s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-graphic::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(229, 179, 163, 0.25) 0%, transparent 70%);
+            z-index: 1;
+            filter: blur(50px);
+            animation: softNodeFloat 10s ease-in-out infinite alternate-reverse;
+        }
+
+        /* PROFILE ABOUT ARCHITECTURE */
+        .section-padding {
+            padding: 8rem 5rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .profile-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .photo-card {
+            width: 100%;
+            height: 440px;
+            border-radius: 24px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.05);
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .photo-card:nth-child(even) {
+            transform: translateY(40px);
+        }
+
+        /* [NEW] PERSONALITY CARDS Styling */
+        .persona-grid {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .personality-card {
+            background: #fdfaf8;
+            padding: 2.5rem 2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(213, 189, 175, 0.2);
+            transition: all 0.4s ease;
+            text-align: center;
+        }
+
+        .personality-card:hover {
+            background: #f5ebe0;
+            /* Her favorite Nude tones */
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(213, 189, 175, 0.1);
+        }
+
+        .persona-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .persona-title {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.8rem;
+        }
+
+        .persona-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .nude-swatch {
+            width: 40px;
+            height: 40px;
+            background: #d5bdaf;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 0 15px rgba(213, 189, 175, 0.5);
+        }
+
+        /* [NEW] RECIPE MODAL STYLING */
+        #recipe-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        #recipe-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .recipe-content {
+            background: #ffffff;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 40px;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.3);
+            transform: translateY(30px);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #recipe-modal.active .recipe-content {
+            transform: translateY(0);
+        }
+
+        .recipe-hero {
+            width: 100%;
+            height: 250px;
+            background: url('pizza.jpg') center/cover;
+            position: relative;
+        }
+
+        .recipe-inner {
+            padding: 3rem;
+        }
+
+        .recipe-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 1rem;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+        }
+
+        .recipe-section h5 {
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--rose-gold);
+            margin-bottom: 1.2rem;
+            font-size: 0.8rem;
+        }
+
+        .recipe-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recipe-list li {
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .recipe-list li::before {
+            content: '•';
+            color: var(--rose-gold);
+        }
+
+        .recipe-steps {
+            list-style: none;
+            counter-reset: step-counter;
+            padding: 0;
+        }
+
+        .recipe-steps li {
+            counter-increment: step-counter;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .recipe-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--blush-pink);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--rose-gold);
+        }
+
+        .btn-recipe-trigger {
+            margin-top: 1.5rem;
+            background: transparent;
+            border: 1px solid var(--rose-gold);
+            color: var(--rose-gold);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-recipe-trigger:hover {
+            background: var(--rose-gold);
+            color: #ffffff;
+        }
+
+        /* [NEW] GALLERY PREVIEW MODAL STYLING */
+        #gallery-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(25px);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        #gallery-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .gallery-modal-content {
+            background: #ffffff;
+            width: 95%;
+            max-width: 1150px;
+            height: 85vh;
+            border-radius: 40px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 60px 120px rgba(0, 0, 0, 0.4);
+            transform: scale(0.95);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        #gallery-modal.active .gallery-modal-content {
+            transform: scale(1);
+        }
+
+        .gallery-modal-left {
+            flex: 1.5;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .gallery-modal-left img,
+        .gallery-modal-left video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none;
+        }
+
+        .gallery-modal-left img.active,
+        .gallery-modal-left video.active {
+            display: block;
+        }
+
+        .gallery-modal-right {
+            flex: 1;
+            padding: 5rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #ffffff;
+            border-left: 1px solid #f0f0f0;
+        }
+
+        .memory-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            color: var(--rose-gold);
+            margin-bottom: 1.5rem;
+            display: block;
+            font-weight: 600;
+        }
+
+        .memory-title {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            line-height: 1.1;
+            font-weight: 300;
+        }
+
+        .memory-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            font-weight: 300;
+        }
+
+        /* Reusing consistent close style */
+        .gallery-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .gallery-close:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        @media (max-width: 1024px) {
+            .gallery-modal-content {
+                flex-direction: column;
+                height: 90vh;
+                overflow-y: auto;
+            }
+
+            .gallery-modal-left {
+                flex: none;
+                height: 50%;
+            }
+
+            .gallery-modal-right {
+                padding: 3rem;
+                flex: none;
+            }
+
+            .memory-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Mobile / Tablet Responsiveness */
+        @media (max-width: 1024px) {
+            .section-padding { padding: 5rem 2rem; }
+            .hero-section { padding: 4rem 2rem; }
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-section {
+                flex-direction: column-reverse;
+                text-align: center;
+                justify-content: center;
+                gap: 4rem;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 3.2rem;
+            }
+
+            .graphic-frame {
+                width: 280px;
+                height: 340px;
+                margin: 0 auto;
+            }
+
+            header {
+                padding: 1.2rem 1.5rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .timer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .time-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .time-val {
+                font-size: 3rem;
+            }
+
+            .countdown-title {
+                font-size: 2.2rem;
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+                margin-bottom: 3rem;
+            }
+
+            .treasure-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 300px;
+            }
+
+            .grid-item:nth-child(n) {
+                grid-column: span 1 !important;
+                grid-row: span 1 !important;
+            }
+
+            .messages-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .slider-card {
+                min-width: 280px;
+                max-width: 280px;
+                padding: 1.5rem;
+            }
+
+            .chat-header-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        .profile-text h2 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            line-height: 1.15;
+        }
+
+        .profile-text p {
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+            font-weight: 300;
+        }
+
+        /* TREASURE GALLERY GRID */
+        .section-title {
+            text-align: center;
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin-bottom: 6rem;
+            font-weight: 300;
+        }
+
+        .treasure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 250px;
+            grid-auto-flow: dense;
+            gap: 1.5rem;
+        }
+
+        .grid-item {
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03);
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .grid-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 37, 35, 0.35);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 2;
+        }
+
+        .grid-item::after {
+            content: 'View Memory';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.85);
+            background: #ffffff;
+            color: var(--text-dark);
+            padding: 0.8rem 1.6rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            z-index: 3;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .grid-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 70px rgba(44, 37, 35, 0.1);
+        }
+
+        .grid-item:hover::before {
+            opacity: 1;
+        }
+
+        .grid-item:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* High-End Architectural Frames (Classy Arches & Squovals) */
+        .grid-item:nth-child(4n+1) {
+            border-radius: 200px 200px 40px 40px;
+            /* Grand Arch */
+        }
+
+        .grid-item:nth-child(4n+2) {
+            border-radius: 40px 220px 40px 220px;
+            /* Dramatic Asymmetric */
+            grid-row: span 2;
+        }
+
+        .grid-item:nth-child(4n+3) {
+            border-radius: 220px 40px 220px 40px;
+            /* Inverse Dramatic */
+            grid-column: span 2;
+        }
+
+        .grid-item:nth-child(4n+4) {
+            border-radius: 100px;
+            /* Soft Luxury Pill */
+        }
+
+        .grid-item {
+            border: 1px solid rgba(229, 179, 163, 0.1);
+        }
+
+        /* Specific Spans for Variety */
+        .grid-item:nth-child(5) {
+            grid-row: span 2;
+            grid-column: span 1;
+        }
+
+        .grid-item:nth-child(7) {
+            grid-column: span 2;
+        }
+
+        .grid-item img,
+        .grid-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .grid-item:hover img,
+        .grid-item:hover video {
+            transform: scale(1.06);
+        }
+
+        /* VISITOR GUESTBOOK OVERVIEW */
+        .messages-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .message-card {
+            background: #ffffff;
+            border: 1px solid #f6f0eb;
+            padding: 3.5rem 2.5rem;
+            border-radius: 32px;
+            box-shadow: 0 15px 45px rgba(44, 37, 35, 0.015);
+            transition: transform 0.5s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            border-radius: 18px;
+            object-fit: cover;
+            margin-bottom: 2rem;
+        }
+
+        .message-card h4 {
+            color: var(--text-dark);
+            font-size: 1.4rem;
+            margin-bottom: 0.4rem;
+            font-family: var(--font-serif);
+            font-weight: 400;
+        }
+
+        .card-relation {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--rose-gold);
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            margin-bottom: 1.5rem;
+        }
+
+        .message-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* ==========================================================================
+           5. KEYFRAME MATHEMATICS FOR WEIGHTLESS NATURAL PHYSICS
+           ========================================================================== */
+        @keyframes floatDriftA {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-18px) translateX(4px) rotate(1deg);
+            }
+        }
+
+        @keyframes floatDriftB {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-24px) translateX(-6px) rotate(-1.5deg);
+            }
+        }
+
+        @keyframes floatDriftC {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-14px) translateX(5px) rotate(0.8deg);
+            }
+        }
+
+        @keyframes floatDriftD {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-22px) translateX(-4px) rotate(-1deg);
+            }
+        }
+
+        @keyframes softNodeFloat {
+            0% {
+                transform: translateY(0px);
+            }
+
+            100% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes pulseFade {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.98);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.02);
+            }
+        }
+
+        /* [REVERSIBLE] Scroll Reveal System */
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .section-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* [NEW] KINETIC REVEAL ANIMATIONS */
+        .reveal-word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: wordReveal 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes wordReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-text p {
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes crystalFloat {
+            0% {
+                transform: translateZ(-500px) rotateX(0deg) rotateY(0deg) scale(0.5);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            80% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateZ(500px) rotateX(360deg) rotateY(720deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .signature {
+            font-family: var(--font-signature);
+            color: var(--rose-gold);
+            font-size: 1.1em;
+            display: inline-block;
+            transform: rotate(-2deg);
+            filter: drop-shadow(0 0 8px rgba(229, 179, 163, 0.4));
+        }
+
+        /* [NEW] Cursor Interaction Aura */
+        #cursor-aura {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(229, 179, 163, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            transition: opacity 2s ease;
+            mix-blend-mode: screen;
+        }
+
+        body.celebrate-active #cursor-aura {
+            opacity: 0;
+        }
+
+        /* [NEW] CHAT SLIDER SECTION (OPTION 2) */
+        .chat-section-wrap {
+            background: linear-gradient(180deg, var(--satin-champagne) 0%, #fffefe 100%);
+            padding: 10rem 0;
+            /* No side padding for full-width scroll */
+            overflow: hidden;
+        }
+
+        .chat-slider {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding: 2rem 5rem 5rem 5rem;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            /* Hide for firefox */
+            -ms-overflow-style: none;
+            /* Hide for IE */
+        }
+
+        .chat-slider::-webkit-scrollbar {
+            display: none;
+            /* Hide for chrome/safari */
+        }
+
+        .slider-card {
+            min-width: 350px;
+            max-width: 350px;
+            scroll-snap-align: center;
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(229, 179, 163, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.5s ease;
+        }
+
+        .slider-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-msg {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        .card-response {
+            background: var(--blush-pink);
+            padding: 1.2rem;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .card-response::before {
+            content: 'You';
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--rose-gold);
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+        }
+
+        .chat-hint {
+            text-align: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--rose-gold);
+            margin-top: 2rem;
+            opacity: 0.6;
+            animation: pulseHint 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseHint {
+
+            0%,
+            100% {
+                transform: translateX(0);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateX(10px);
+                opacity: 0.8;
+            }
+        }
+
+        .chat-header-title {
+            text-align: center;
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin-bottom: 5rem;
+            font-weight: 300;
+        }
+
+        .chat-timestamp {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-top: 0.8rem;
+            display: block;
+        }
+
+        /* [NEW] SECRET MESSAGE MODAL */
+        #secret-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(25px);
+            /* Deep blur for 'static' background effect */
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #secret-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4.5rem;
+            max-width: 650px;
+            border-radius: 40px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            transform: scale(0.96);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #secret-modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 2rem;
+            right: 2.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.4);
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--rose-gold);
+        }
+
+        .secret-letter {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            line-height: 1.9;
+            color: #ffffff;
+            font-style: italic;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .secret-letter p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* [NEW] LUXURY CURSOR STYLING */
+        #cursor-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            border-radius: 50%;
+            transition: transform 0.1s ease;
+        }
+
+        #cursor-ring {
+            width: 38px;
+            height: 38px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            border-radius: 50%;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #cursor-ring.hover {
+            width: 60px;
+            height: 60px;
+            border-color: var(--rose-gold);
+            background-color: rgba(229, 179, 163, 0.1);
+        }
+
+        #cursor-ring.clicking {
+            transform: scale(0.85);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        body.celebrate-active #cursor-dot {
+            background-color: var(--text-dark);
+        }
+
+        body.celebrate-active #cursor-ring {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        #audio-controller {
+            /* [FIXED] Removed fixed positioning to prevent overlap with nav */
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            z-index: 2000;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 3.5rem;
+        }
+
+        body.celebrate-active #audio-controller {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        #audio-controller:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--rose-gold);
+        }
+
+        #audio-status {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: #ffffff;
+            transition: color 0.3s;
+        }
+
+        body.celebrate-active #audio-status {
+            color: var(--text-dark);
+        }
+
+        /* [NEW] MUSIC PULSE & TOOLTIP */
+        #audio-controller.pulse {
+            animation: controllerPulse 2s infinite ease-in-out;
+            border-color: var(--rose-gold);
+            box-shadow: 0 0 20px rgba(229, 179, 163, 0.4);
+        }
+
+        @keyframes controllerPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .music-hint-tooltip {
+            position: absolute;
+            bottom: -40px;
+            right: 0;
+            background: var(--text-dark);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .music-hint-tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .music-hint-tooltip::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: 20px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid var(--text-dark);
+        }
+
+        .visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 12px;
+        }
+
+        .visualizer .bar {
+            width: 2px;
+            background: var(--rose-gold);
+            height: 4px;
+            transition: height 0.3s ease;
+        }
+
+        #audio-controller.playing .bar {
+            animation: musicWave 0.8s ease-in-out infinite alternate;
+        }
+
+        #audio-controller.playing .bar:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        #audio-controller.playing .bar:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        #audio-controller.playing .bar:nth-child(4) {
+            animation-delay: 0.1s;
+        }
+
+        @keyframes musicWave {
+            from {
+                height: 4px;
+            }
+
+            to {
+                height: 12px;
+            }
+        }
+
+        /* [NEW] CONCLUSION SECTION STYLING */
+        .conclusion-section {
+            padding: 10rem 5rem;
+            text-align: center;
+            background: linear-gradient(180deg, transparent 0%, rgba(229, 179, 163, 0.05) 100%);
+            border-top: 1px solid rgba(229, 179, 163, 0.1);
+        }
+
+        .conclusion-quote {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.4;
+            font-weight: 300;
+        }
+
+        .conclusion-sign {
+            font-family: var(--font-signature);
+            font-size: 2.5rem;
+            color: var(--rose-gold);
+            margin-bottom: 4rem;
+        }
+
+        .footer-credit {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body class="scroll-locked">
+
+    <canvas id="space-canvas"></canvas>
+    <div id="cursor-aura"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Moved inside header to prevent layout overlap -->
+
+    <audio id="bg-music" src="bg-music.mp3" loop pre-load="auto"></audio>
+
+    <header>
+        <div class="logo">For <span>Bervelyn</span></div>
+        <div class="nav-container">
+            <nav id="main-nav">
+                <a href="#home" onclick="closeMobileMenu()">Home </a>
+                <a href="#about" onclick="closeMobileMenu()">About Her 💅🏼</a>
+                <a href="#chat" onclick="closeMobileMenu()">Theories of Bervelyn 💭</a>
+                <a href="#gallery" onclick="closeMobileMenu()">Gallery 📸</a>
+            </nav>
+            <div id="audio-controller" onclick="toggleAudio()" title="Play/Pause Background Music">
+                <div class="visualizer">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <span id="audio-status">MUSIC: OFF</span>
+                <div id="music-hint" class="music-hint-tooltip">Tap for Music 🎵</div>
+            </div>
+            <div class="mobile-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- [NEW] FULL-SCREEN MOBILE NAV OVERLAY -->
+    <div id="mobile-overlay">
+        <a href="#home" class="overlay-nav-link" onclick="closeMobileMenu()">Home</a>
+        <div class="overlay-divider"></div>
+        <a href="#about" class="overlay-nav-link" onclick="closeMobileMenu()">About Her 💅🏼</a>
+        <div class="overlay-divider"></div>
+        <a href="#chat" class="overlay-nav-link" onclick="closeMobileMenu()">Theories 💭</a>
+        <div class="overlay-divider"></div>
+        <a href="#gallery" class="overlay-nav-link" onclick="closeMobileMenu()">Gallery 📸</a>
+        <div class="overlay-signature">Bervelyn</div>
+    </div>
+
+    <section id="countdown-screen">
+        <div class="crystal-container" id="crystal-container"></div>
+        <span class="sub-badge">The Big Day</span>
+        <h2 class="countdown-title">Counting Down to <span>June 18th</span></h2>
+        <p class="countdown-subtitle">Every single second brings us closer to celebrating you</p>
+
+        <div class="timer-grid">
+            <div class="time-card">
+                <div class="time-val" id="days">00</div>
+                <div class="time-lbl">Days</div>
+            </div>
+            <div class="time-card">
+                <div class="time-val" id="hours">00</div>
+                <div class="time-lbl">Hours</div>
+            </div>
+            <div class="time-card">
+                <div class="time-val" id="minutes">00</div>
+                <div class="time-lbl">Minutes</div>
+            </div>
+            <div class="time-card">
+                <div class="time-val" id="seconds">00</div>
+                <div class="time-lbl">Seconds</div>
+            </div>
+        </div>
+
+        <div class="decorative-shimmer">✦ 🎂 ✦</div>
+    </section>
+
+    <main id="main-content">
+
+        <section id="home" class="hero-section section-reveal" data-theme="theme-hero">
+            <div class="hero-text">
+                <span class="badge-years parallax" data-speed="0.2" style="animation-delay: 0.2s">Celebrating 19
+                    Beautiful Years</span>
+                <h1 class="parallax" data-speed="0.4">
+                    <span class="reveal-word" style="animation-delay: 0.4s">Happy</span>
+                    <span class="reveal-word" style="animation-delay: 0.5s">19th</span>
+                    <span class="reveal-word" style="animation-delay: 0.6s">Birthday,</span>
+                    <br>
+                    <span class="signature reveal-word" style="animation-delay: 0.8s">Bervelyn</span>!
+                </h1>
+                <p>Celebrating your light, your beautiful laughter, and the extraordinary person you are.</p>
+            </div>
+            <div class="hero-graphic parallax" data-speed="-0.15">
+                <div class="graphic-frame"></div>
+            </div>
+        </section>
+
+        <section id="about" class="section-padding section-reveal" data-theme="theme-about">
+            <div class="profile-layout">
+                <div class="profile-gallery">
+                    <img src="essence0.png" class="photo-card" alt="About Bervelyn 0">
+                    <img src="essence1.png" class="photo-card" alt="About Bervelyn 1">
+                    <img src="essence2.jpg" class="photo-card" alt="About Bervelyn 2">
+                    <img src="essence.jpg" class="photo-card" alt="About Bervelyn 3">
+                </div>
+                <div class="profile-text">
+                    <h2 class="section-title parallax" data-speed="0.2">The Essence of Bervelyn</h2>
+                    <p>Bervelyn is the kind of person who makes life feel a little softer and brighter without even
+                        trying.
+                        Incredibly smart, creative, graceful, and always bringing random ideas to life in the coolest
+                        way.
+                        She has this calm, beautiful energy about her, and somehow even her chaos looks aesthetic 🥲🥲.
+                    </p>
+
+                    <div class="persona-grid">
+                        <!-- Fav Color Card -->
+                        <div class="personality-card">
+                            <div class="nude-swatch"></div>
+                            <h4 class="persona-title">Colour: Nude</h4>
+                            <p class="persona-desc">Girls who love nude are either sweet, expensive-looking, or trouble.
+                                I’m still figuring out which one you are😅</p>
+                        </div>
+
+                        <!-- Cooking Card -->
+                        <div class="personality-card">
+                            <span class="persona-icon">👩‍🍳</span>
+                            <h4 class="persona-title">"Master Chef"</h4>
+                            <p class="persona-desc">She loves to cook. Her passion is unmatched, even if the results are
+                                sometimes... adventurous. 🥲🤧</p>
+                            <button class="btn-recipe-trigger" onclick="toggleRecipe(true)">View Secret Recipe</button>
+                        </div>
+
+                        <!-- Drawing Card -->
+                        <div class="personality-card">
+                            <span class="persona-icon">🎨</span>
+                            <h4 class="persona-title">Abstract Artist</h4>
+                            <p class="persona-desc">A creative genius with a pencil. Her drawings have confused friends,
+                                teachers, and possibly scientists. She calls it abstract art, when it's really a very
+                                difficult guessing game. 👀</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="chat" class="chat-section-wrap section-reveal" data-theme="theme-chat">
+            <h3 class="chat-header-title">Bervelyn Once Said</h3>
+
+            <div class="chat-slider">
+                <!-- Card 1 -->
+                <div class="slider-card">
+                    <div class="card-msg">
+                        "Life is like a door; Never trust a cow because the sun can't swim."
+                    </div>
+                    <div class="card-response">
+                        😮‍💨deep thoughts
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="slider-card">
+                    <div class="card-msg">
+                        "The best gift you can give your kids is a mother who attended meghis."
+                    </div>
+                    <div class="card-response">
+                        All they know is how to cook gari🥲
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="slider-card">
+                    <div class="card-msg">
+                        "What if the only way to stop feeling bad is to stop feeling anything at all, forever.🥲👀."
+                    </div>
+                    <div class="card-response">
+                        Depression can kill🤣, I'm here for you, always. [🥲cap]
+                    </div>
+                </div>
+
+                <!-- Cards 4 to 31 (Placeholders) -->
+                <div class="slider-card">
+                    <div class="card-msg">
+                        "Eish! this my forehead de3 stop o😭😭😭"
+                    </div>
+                    <div class="card-response">It's still manageable🤣</div>
+                </div>
+
+                <div class="slider-card">
+                    <div class="card-msg">"I’m not a girl duh; I’m a trans🥲"</div>
+                    <div class="card-response">You and your bestie🤣; the gwagwa queen💅🏼 the headuactor</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Arhnn ow you …I don’t really care you’re not my client 🤷‍♀️"</div>
+                    <div class="card-response">I hope your long lashes poke you in the eye😭🤣</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Hmm it really hurts when people think I’m a child 😭"</div>
+                    <div class="card-response">You're not a child, you're a minor😌 There's a difference</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"I just become creative anytime I'm bored😑"</div>
+                    <div class="card-response">Her drawings are so abstract even Google Lens gave up 😭😭😭</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"This is a dog 🐄; If you see a cow, you're in love with me"</div>
+                    <div class="card-response">I'm so in love with you 🥹</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Men are naturally villains hence proof. Done 💯💯💯💯💯💯"</div>
+                    <div class="card-response">All those months of learning linear algebra, for what😭😭🤧</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Fred it’s light out and I’ve not straightened my wig🥲"</div>
+                    <div class="card-response">Come and wear mine🥲🤣</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Stop pressing phone and concentrate"</div>
+                    <div class="card-response">Says the girl who texted me through her nose😭🤣 spy🥲</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"I celebrate my birthday every two months hence I’m 21 now"</div>
+                    <div class="card-response">Things she says after eating noodles 😅😅</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Oh I’m not betraying you o. The thing is, there’s nothing to show we had a
+                        deal cos I didn’t sign or stamp🤷‍♀️😔"</div>
+                    <div class="card-response">The only trustworthy woman in my life is my mother fr🤣🤣 The rest are
+                        all liars</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Ow I was just checking up you see I’m caring"</div>
+                    <div class="card-response">You're not caring, you're just nosy 🤣 [konkonsa girl like you]</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"I just wanted to make sure you’re around cos I want to bomb campus"</div>
+                    <div class="card-response">I'm always around 🥲 [terrorist]</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Fredddd are you not feeling cold 🥶"</div>
+                    <div class="card-response">Konji is real🤧🤧🤧 Use your words carefully</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"But I’ve actually planned on being punctual this sem"</div>
+                    <div class="card-response">"I'm not surprised, you're a woman of your word [🥲cap]"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Fred🥲has Dr kwegyir left?"</div>
+                    <div class="card-response">"Try coming to class🥲 [Truancy is not good]"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"You’ll get to win when I feel like it 🤷‍♀️"</div>
+                    <div class="card-response">"Her after losing bact to back to back 😭"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"My mom says I should not let anyone touch my head and I cannot disobey her"
+                    </div>
+                    <div class="card-response">"Only God knows how she gets her hair done without anyone touching it 🤣"
+                    </div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"I’m always right"</div>
+                    <div class="card-response">"You're not always right, you're just always arguing 🤣"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"I won’t tolerate any lateness today o"</div>
+                    <div class="card-response">"Her after postponing the time for the 3rd time 🤣"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"When you get there and there’s actually class then you call me wae🤣🤣🤣"
+                    </div>
+                    <div class="card-response">"You will hear from the head of department soon😌😌😌"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Human beings should be sleeping by now what are you doing here👀"</div>
+                    <div class="card-response">"Abeyifuor feelings 😌😌😌"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Good glorious evening"</div>
+                    <div class="card-response">"Guess who needs a favour? 🤣🤣🤣"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Fred, I’m watching the match o so let’s meet at 9:40 wae"</div>
+                    <div class="card-response">"Fear women who can lie with a straight face 🥲"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"I take in real cocaine. Not chalk, not powder, not neat fufu. I take in real
+                        cocaine from the right source.😶🫥"</div>
+                    <div class="card-response">"Cheap drugs can kill 🥲"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Ow please I don’t take in any drugs o Eeii na me the way I’m naturally high
+                        if I add drugs de3 like I’ll run mad straight o🤣🤣😂”</div>
+                    <div class="card-response">"I'm not surprised 🤣"</div>
+                </div>
+                <div class="slider-card">
+                    <div class="card-msg">"Being romantic is taking responsibility must I tell you this erhnnnnn"</div>
+                    <div class="card-response">"Shocking how that definition changes when it's time to take
+                        responsibility 🤣"</div>
+
+                </div>
+            </div>
+
+            <div class="chat-hint">Swipe to explore our theories →</div>
+        </section>
+
+
+        <section id="gallery" class="section-padding section-reveal" data-theme="theme-gallery">
+            <h3 class="section-title">Moments We Treasure</h3>
+            <p class="section-hint"
+                style="text-align: center; margin-top: -5rem; margin-bottom: 5rem; color: var(--rose-gold); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.3em; opacity: 0.7;">
+                ✦ Click any moment to explore the memory ✦</p>
+            <div class="treasure-grid">
+                <div class="grid-item" onclick="openGallery(this)">
+                    <img src="gallery1.jpg" alt="Moment 1" data-title="Fake life😌"
+                        data-desc="Fake it till you make it 🥲. I really don't know what you were doing here but it's funny how your supposed piercing looks more like a dent up close🤣">
+                </div>
+                <div class="grid-item" onclick="openGallery(this)">
+                    <img src="gallery2.jpg" alt="Moment 2" data-title="Unmatched Elegance😌"
+                        data-desc="When you wore Cinderella's glass slippers 🥹">
+                </div>
+                <div class="grid-item" onclick="openGallery(this)">
+                    <img src="gallery3.jpg" alt="Moment 3" data-title="The Chef's Own Delight"
+                        data-desc="I really wish you made more of these often so that us, the indomie spammers, may learn from from you 🥲.">
+                </div>
+                <div class="grid-item" onclick="openGallery(this)">
+                    <img src="gallery4.jpg" alt="Moment 4" data-title="The Pavillion😭😭😭🤧"
+                        data-desc="You wicked soul🥲. Will it kill you to bring it back to school???? The memory is not even about your weird-looking drawings anymore 🤣🤣🤣">
+                </div>
+                <div class="grid-item" onclick="openGallery(this)">
+                    <img src="gallery5.jpg" alt="Moment 5" data-title="Simply Delightful🥹"
+                        data-desc="She claims she made fried rice with of tumeric instead of soy sauce 😌. Truth is, it tasted so bad she had to add stew to neutralize it 🤣🤣🤣.">
+                </div>
+                <div class="grid-item" onclick="openGallery(this)">
+                    <img src="gallery6.jpg" alt="Moment 6" data-title="Classic Bervelyn😅"
+                        data-desc="This is arguably the best drawing she has ever made 🤣🤣🤣. Apart from the first one, I don't think I can identify any others worth even a pesewa 🥲[Not that the first was any good, though]">
+                </div>
+                <div class="grid-item" onclick="openGallery(this)">
+                    <img src="gallery7.jpg" alt="Moment 7" data-title="Poetic 🥹"
+                        data-desc="Till date, no one knows exactly what you were doing here 🤣🤣🤣. You were sort of reading a book, and then out of boredom you drew your back, and then a teddy to kind of, continue reading your book for you. On some poetic shakespear shit😅">
+                </div>
+                <!-- [NEW] VIDEO ITEMS -->
+                <div class="grid-item" onclick="openGallery(this)">
+                    <video src="vid1.mp4" muted loop playsinline data-title="Ayra Starr's Biggest Fan"
+                        data-desc="Many are mad, but few are roaming 🤣🤣🤣 It took me 2 days to figure out she was actually trying to sing 🥲. Ayra starr would be so proud of you🥹🤧"></video>
+                </div>
+                <div class="grid-item" onclick="openGallery(this)">
+                    <video src="vid2.mp4" muted loop playsinline data-title="The Glory days😁😁😁"
+                        data-desc="I'm guessing this is when your glow up officially started 🥹 Oh my God, look at those cheeks 🤣🤣🤣"></video>
+                </div>
+                <div class="grid-item" onclick="openGallery(this)">
+                    <video src="vid3.mp4" muted loop playsinline data-title="Your dream mansion"
+                        data-desc="For some weird reason, she didn't want to sell it to me 🥲. Nonetheless, I pity whoever bought that house😅 They paid for no water, no light and a very likely fire hazard 🤣🤣🤣"></video>
+                </div>
+            </div>
+        </section>
+
+        <section class="conclusion-section section-reveal">
+            <h2 class="conclusion-quote">"Always remember that your light is rare, your laughter is a gift, and the
+                world is better simply because you are in it."</h2>
+            <div class="conclusion-sign">To many more, Bervelyn.</div>
+            <div class="footer-credit">Developed with 🤍 for you</div>
+        </section>
+
+
+    </main>
+
+    <script src="confetti.js"></script>
+    <script>
+        // ==========================================================================
+        // LUMINOUS INTERACTIVE SWARM (ANTIGRAVITY STYLE)
+        // ==========================================================================
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+        const aura = document.getElementById('cursor-aura');
+        let particles = [];
+        let mouse = { x: -1000, y: -1000 };
+        let isPaused = false;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // [FIX] Redistribute particles to fill new space on resize/maximize
+            if (particles && particles.length > 0) {
+                particles.forEach(p => {
+                    p.baseX = Math.random() * canvas.width;
+                    p.baseY = Math.random() * canvas.height;
+                    // If they are far off screen, bring them back in immediately
+                    if (p.x > canvas.width) p.x = Math.random() * canvas.width;
+                    if (p.y > canvas.height) p.y = Math.random() * canvas.height;
+                });
+            }
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        let cursorX = 0, cursorY = 0;
+        let ringX = 0, ringY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+
+            // Immediate dot movement
+            cursorDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+
+            // Update the aura position
+            aura.style.left = e.clientX + 'px';
+            aura.style.top = e.clientY + 'px';
+
+            // Check for interactive elements for cursor state
+            const target = e.target;
+            const isInteractive = target.closest('a, button, .grid-item, .slider-card, .logo, .modal-close');
+            if (isInteractive) {
+                cursorRing.classList.add('hover');
+            } else {
+                cursorRing.classList.remove('hover');
+            }
+
+            // Check for hover over the unique secret red heart
+            let isHoveringHeart = false;
+            particles.forEach(p => {
+                if (p.isRedSecret) {
+                    const dx = e.clientX - p.x;
+                    const dy = e.clientY - p.y;
+                    if (Math.sqrt(dx * dx + dy * dy) < 40) isHoveringHeart = true;
+                }
+            });
+            // We still use pointer-events: none on cursor elements, but we change cursor style for visual feedback
+            if (isHoveringHeart) cursorRing.classList.add('hover');
+        });
+
+        // Smooth trailing effect for the ring (LERP)
+        function updateCursor() {
+            const lerp = 0.15;
+            ringX += (mouse.x - ringX) * lerp;
+            ringY += (mouse.y - ringY) * lerp;
+
+            cursorRing.style.transform = `translate(${ringX - cursorRing.offsetWidth / 2}px, ${ringY - cursorRing.offsetHeight / 2}px)`;
+
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        window.addEventListener('mouseup', () => cursorRing.classList.remove('clicking'));
+
+        // [NEW] PARALLAX SCROLL ENGINE
+        const parallaxElements = document.querySelectorAll('.parallax');
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+            parallaxElements.forEach(el => {
+                const speed = el.getAttribute('data-speed');
+                const yPos = -(scrolled * speed);
+                el.style.transform = `translateY(${yPos}px)`;
+            });
+            requestAnimationFrame(updateParallax);
+        }
+        updateParallax();
+
+        // [NEW] WINDOW CLICK LISTENER FOR SECRET HEART GAME
+        window.addEventListener('click', (e) => {
+            if (document.body.classList.contains('celebrate-active')) return;
+
+            particles.forEach(p => {
+                if (p.isRedSecret && p.isSecretTarget) {
+                    const dx = e.clientX - p.x;
+                    const dy = e.clientY - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 40) {
+                        openSecretModal();
+                    }
+                }
+            });
+        });
+
+        function openSecretModal() {
+            const goldRemaining = particles.filter(p => p.isGolden).length;
+            if (goldRemaining === 0) {
+                document.querySelector('.secret-letter').innerHTML = `
+                    <h1 style="font-size: 3.5rem; margin-bottom: 2rem; color: var(--rose-gold);">You Won!</h1>
+                    <p style="font-size: 1.5rem; color: #ffffff;">You found your way through every heart. You're amazing.</p>
+                    <p style="margin-top: 2rem; font-style: normal;">🏆✨❤️</p>
+                `;
+            }
+            document.getElementById('secret-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            isPaused = true; // Freeze time
+        }
+
+        function toggleRecipe(show) {
+            const modal = document.getElementById('recipe-modal');
+            if (show) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        let musicAutoPaused = false;
+        function openGallery(element) {
+            const img = element.querySelector('img');
+            const vid = element.querySelector('video');
+            const modal = document.getElementById('gallery-modal');
+            const modalImg = document.getElementById('gallery-full-img');
+            const modalVid = document.getElementById('gallery-full-vid');
+            const modalTitle = document.getElementById('gallery-title');
+            const modalDesc = document.getElementById('gallery-desc');
+
+            // Reset media state
+            modalImg.src = "";
+            modalImg.classList.remove('active');
+            modalVid.pause();
+            modalVid.src = "";
+            modalVid.classList.remove('active');
+
+            const media = img || vid;
+            modalTitle.innerText = media.getAttribute('data-title');
+            modalDesc.innerText = media.getAttribute('data-desc');
+
+            if (img) {
+                modalImg.src = img.src;
+                modalImg.classList.add('active');
+            } else if (vid) {
+                modalVid.src = vid.src;
+                modalVid.classList.add('active');
+                modalVid.play();
+
+                // [NEW] Pause BG Music if it is playing
+                if (isPlaying) {
+                    bgMusic.pause();
+                    audioStatus.innerText = 'MUSIC: PAUSED';
+                    audioCtrl.classList.remove('playing');
+                    musicAutoPaused = true;
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery() {
+            const modal = document.getElementById('gallery-modal');
+            const modalVid = document.getElementById('gallery-full-vid');
+            modalVid.pause();
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+
+            // [NEW] Resume BG Music if it was auto-paused
+            if (musicAutoPaused) {
+                bgMusic.play();
+                audioStatus.innerText = 'MUSIC: ON';
+                audioCtrl.classList.add('playing');
+                musicAutoPaused = false;
+            }
+        }
+
+        function closeSecretModal() {
+            document.getElementById('secret-modal').classList.remove('active');
+            document.body.style.overflow = '';
+            isPaused = false; // Resume time
+
+            // EVOLUTION LOGIC: Add more red hearts and shuffle secret
+            const goldHearts = particles.filter(p => p.isGolden);
+
+            // 1. Turn one more Gold heart to Red (if available)
+            if (goldHearts.length > 0) {
+                const newRed = goldHearts[Math.floor(Math.random() * goldHearts.length)];
+                newRed.convertToRed();
+            }
+
+            // 2. Refresh all red hearts and shuffle which one is the secret target
+            const allReds = particles.filter(p => p.isRedSecret);
+            allReds.forEach(p => p.isSecretTarget = false);
+
+            if (allReds.length > 0) {
+                const randomSecret = allReds[Math.floor(Math.random() * allReds.length)];
+                randomSecret.isSecretTarget = true;
+            }
+        }
+
+        class Particle {
+            constructor(type = 'default') {
+                this.isGolden = (type === 'gold');
+                this.isRedSecret = (type === 'red');
+                this.isSecretTarget = (type === 'red'); // Start with the first red heart as target
+                this.reset();
+            }
+            convertToRed() {
+                this.isGolden = false;
+                this.isRedSecret = true;
+                this.color = '#ff3333';
+                this.shadowColor = '#ff3333';
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                // Original position for "spring" back logic
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.size = (this.isGolden || this.isRedSecret) ? Math.random() * 3 + 3 : Math.random() * 2 + 1;
+                this.vx = (Math.random() - 0.5) * 2.5;
+                this.vy = (Math.random() - 0.5) * 2.5;
+                this.friction = 0.94;
+
+                if (this.isRedSecret) {
+                    this.color = '#ff3333'; // Vibrant Red
+                    this.isHeart = true;
+                    this.alpha = 1.0;
+                } else if (this.isGolden) {
+                    this.color = '#d4af37'; // Gold
+                    this.isHeart = true;
+                    this.alpha = 1.0;
+                } else {
+                    this.color = Math.random() > 0.7 ? '#e5b3a3' : '#ffffff';
+                    this.isHeart = Math.random() > 0.85;
+                    this.alpha = Math.random() * 0.5 + 0.2;
+                }
+
+                this.bloomPhase = Math.random() * Math.PI * 2;
+            }
+            draw() {
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                if (this.isRedSecret) {
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = '#ff3333';
+                    this.drawHeart(this.x, this.y, this.size * 2.5);
+                    ctx.shadowBlur = 0;
+                } else if (this.isGolden) {
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = '#d4af37';
+                    this.drawHeart(this.x, this.y, this.size * 2.5);
+                    ctx.shadowBlur = 0;
+                } else if (this.isHeart) {
+                    this.drawHeart(this.x, this.y, this.size * 2.5);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    // Glow for larger ones
+                    if (this.size > 2) {
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = this.color;
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            }
+            drawHeart(x, y, size) {
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.bezierCurveTo(x, y - size / 2, x - size, y - size / 2, x - size, y);
+                ctx.bezierCurveTo(x - size, y + size / 2, x, y + size, x, y + size);
+                ctx.bezierCurveTo(x, y + size, x + size, y + size / 2, x + size, y);
+                ctx.bezierCurveTo(x + size, y - size / 2, x, y - size / 2, x, y);
+                ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                // Physics constants
+                let maxDist = this.isGolden ? 650 : 550;
+                let force = (maxDist - distance) / maxDist;
+                if (force < 0) force = 0;
+
+                // Influence: Pull toward mouse if close
+                if (distance < maxDist) {
+                    let strength = (this.isGolden || this.isRedSecret) ? 2.5 : 1.8;
+                    this.vx += (dx / distance) * force * strength;
+                    this.vy += (dy / distance) * force * strength;
+                }
+
+                // Spring back to base position logic
+                let bdx = this.baseX - this.x;
+                let bdy = this.baseY - this.y;
+                let returnStrength = (this.isGolden || this.isRedSecret) ? 0.005 : 0.008;
+                this.vx += bdx * returnStrength;
+                this.vy += bdy * returnStrength;
+
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Subtle twinkle
+                this.bloomPhase += 0.05;
+                if (!this.isGolden && !this.isRedSecret) {
+                    this.alpha = 0.3 + Math.sin(this.bloomPhase) * 0.2;
+                } else {
+                    this.alpha = 0.8 + Math.sin(this.bloomPhase) * 0.2;
+                }
+            }
+        }
+
+        // Initialize swarm with 1 Red Secret Heart and 18 Gold Hearts
+        particles.push(new Particle('red'));
+        for (let i = 0; i < 18; i++) {
+            particles.push(new Particle('gold'));
+        }
+        for (let i = 0; i < 160; i++) {
+            particles.push(new Particle('default'));
+        }
+
+        function runSwarmLoop() {
+            if (!isPaused) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+            }
+            // Keep running unless celebration active (handled by CSS fade but JS can stop)
+            if (!document.body.classList.contains('celebrate-active')) {
+                requestAnimationFrame(runSwarmLoop);
+            }
+        }
+        runSwarmLoop();
+
+        // ==========================================================================
+        // COUNTDOWN SCHEDULER & TIMING CONTROL ENGINE
+        // ==========================================================================
+        const bdayYear = new Date().getFullYear();
+        const bdayDate = new Date(`June 18, ${bdayYear} 00:00:00`).getTime();
+
+        const countdownScreen = document.getElementById('countdown-screen');
+        const bodyEl = document.body;
+
+        function refreshClock() {
+            const rightNow = new Date().getTime();
+            const timeDiff = bdayDate - rightNow;
+
+            if (timeDiff <= 0) {
+                clearInterval(clockInterval);
+                executeBloomCelebration();
+                return;
+            }
+
+            const d = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = d < 10 ? '0' + d : d;
+            document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+            document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+            document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+        }
+
+        const clockInterval = setInterval(refreshClock, 1000);
+        refreshClock();
+
+        // --- 3D TILT LOGIC ---
+        countdownScreen.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.time-card');
+            const { clientX, clientY } = e;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            const rotateX = (clientY - centerY) / 25;
+            const rotateY = (clientX - centerX) / 25;
+
+            cards.forEach(card => {
+                card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+        });
+
+        countdownScreen.addEventListener('mouseleave', () => {
+            const cards = document.querySelectorAll('.time-card');
+            cards.forEach(card => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            });
+        });
+
+        // --- 3D CRYSTAL LOGIC ---
+        const crystalContainer = document.getElementById('crystal-container');
+        function createCrystal() {
+            const crystal = document.createElement('div');
+            crystal.className = 'crystal';
+
+            // Random positioning and size
+            const size = Math.random() * 6 + 4;
+            crystal.style.width = size + 'px';
+            crystal.style.height = size * 2 + 'px';
+            crystal.style.left = Math.random() * 100 + 'vw';
+            crystal.style.top = Math.random() * 100 + 'vh';
+
+            // Randomized animation duration
+            crystal.style.animationDuration = Math.random() * 5 + 5 + 's';
+
+            crystalContainer.appendChild(crystal);
+            setTimeout(() => crystal.remove(), 20000);
+        }
+
+        setInterval(createCrystal, 800);
+
+        function executeBloomCelebration() {
+            // Elegant Pastel Color Streams
+            const paletteColors = ['#e5b3a3', '#f3d1c9', '#faf6f0', '#d4af37'];
+            const runtimeEnd = Date.now() + (3 * 1000);
+
+            (function animationFrameLoop() {
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 65,
+                    origin: { x: 0, y: 0.85 },
+                    colors: paletteColors
+                });
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 65,
+                    origin: { x: 1, y: 0.85 },
+                    colors: paletteColors
+                });
+
+                if (Date.now() < runtimeEnd) {
+                    requestAnimationFrame(animationFrameLoop);
+                }
+            }());
+
+            // Transition triggers: smooth dissolve away
+            countdownScreen.classList.add('vanished');
+            bodyEl.classList.remove('scroll-locked');
+            bodyEl.classList.add('celebrate-active');
+
+            // [REVERSIBLE] Initialize Reveal Observer
+            const observerOptions = { threshold: 0.1 }; // Trigger when 10% visible
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+
+                        // [NEW] Theme switcher logic
+                        const theme = entry.target.getAttribute('data-theme');
+                        if (theme) {
+                            // Remove existing themes
+                            document.body.classList.remove('theme-hero', 'theme-about', 'theme-chat', 'theme-gallery');
+                            document.body.classList.add(theme);
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.section-reveal').forEach(el => revealObserver.observe(el));
+
+            // [NEW] Trigger Music Hint
+            setTimeout(() => {
+                const audioCtrl = document.getElementById('audio-controller');
+                const musicHint = document.getElementById('music-hint');
+                if (!isPlaying) {
+                    audioCtrl.classList.add('pulse');
+                    musicHint.classList.add('visible');
+
+                    // Auto-hide hint after 10 seconds if not clicked
+                    setTimeout(() => {
+                        musicHint.classList.remove('visible');
+                        audioCtrl.classList.remove('pulse');
+                    }, 10000);
+                }
+            }, 3000); // 3 seconds after celebration starts
+        }
+
+        // --- DEVELOPMENT OVERRIDE SHORTCUT ---
+        // Typing "fred" simulates time hitting zero instantly!
+        let triggerBuffer = "";
+        window.addEventListener('keydown', (e) => {
+            triggerBuffer += e.key.toLowerCase();
+            if (triggerBuffer.endsWith('fred')) {
+                clearInterval(clockInterval);
+                executeBloomCelebration();
+                triggerBuffer = "";
+            }
+            if (triggerBuffer.length > 20) triggerBuffer = triggerBuffer.substring(1);
+        });
+        // [NEW] AUDIO ENGINE
+        const bgMusic = document.getElementById('bg-music');
+        const audioCtrl = document.getElementById('audio-controller');
+        const audioStatus = document.getElementById('audio-status');
+        let isPlaying = false;
+
+        function toggleAudio() {
+            // [NEW] Remove pulse and hint on click
+            audioCtrl.classList.remove('pulse');
+            document.getElementById('music-hint').classList.remove('visible');
+
+            if (isPlaying) {
+                bgMusic.pause();
+                audioStatus.innerText = 'MUSIC: OFF';
+                audioCtrl.classList.remove('playing');
+            } else {
+                bgMusic.play().catch(e => {
+                    console.error("Audio play failed. Ensure 'bg-music.mp3' exists in the folder.", e);
+                    alert("Please ensure 'bg-music.mp3' is in the folder!");
+                });
+                audioStatus.innerText = 'MUSIC: ON';
+                audioCtrl.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // [NEW] MOBILE MENU LOGIC
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobile-overlay');
+            const toggle = document.querySelector('.mobile-toggle');
+            const isActive = overlay.classList.toggle('active');
+            toggle.classList.toggle('active');
+            document.body.style.overflow = isActive ? 'hidden' : '';
+        }
+
+        function closeMobileMenu() {
+            const overlay = document.getElementById('mobile-overlay');
+            const toggle = document.querySelector('.mobile-toggle');
+            overlay.classList.remove('active');
+            toggle.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    </script>
+    <div id="secret-modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeSecretModal()">&times;</span>
+            <div class="secret-letter">
+                <p>You found it. I knew you would.</p>
+                <p>I've added more red hearts to the swarm to make it a bit more difficult to find😌</p>
+                <p>Hit the close button and try again.</p>
+                <p style="margin-top: 2rem;">— OSNS, Fred</p>
+            </div>
+        </div>
+    </div>
+    <div id="gallery-modal">
+        <div class="gallery-modal-content">
+            <span class="gallery-close" onclick="closeGallery()">&times;</span>
+            <div class="gallery-modal-left">
+                <img id="gallery-full-img" src="" alt="Full Preview">
+                <video id="gallery-full-vid" src="" controls playsinline></video>
+            </div>
+            <div class="gallery-modal-right">
+                <span class="memory-label">A Treasured Memory</span>
+                <h3 id="gallery-title" class="memory-title">Title Here</h3>
+                <p id="gallery-desc" class="memory-desc">Description text goes here...</p>
+            </div>
+        </div>
+    </div>
+    <div id="recipe-modal">
+        <div class="recipe-content">
+            <!-- Increased visibility for the close button -->
+            <span class="modal-close" onclick="toggleRecipe(false)"
+                style="color: #000000; z-index: 100; font-weight: bold; background: rgba(0,0,0,0.05); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; top: 1.5rem; right: 1.5rem;">&times;</span>
+            <div class="recipe-hero"></div>
+            <div class="recipe-inner">
+                <h3 class="recipe-title">Bervelyn's "Masterpiece" Gari Lasagna</h3>
+
+                <div class="recipe-grid">
+                    <div class="recipe-section">
+                        <h5>Ingredients</h5>
+                        <ul class="recipe-list">
+                            <li>A dangerous amount of Gari</li>
+                            <li>Lukewarm water</li>
+                            <li>Pinch of salt</li>
+                            <li>Carrots</li>
+                            <li>Green pepper</li>
+                            <li>Sausage</li>
+                            <li>Vegetable oil</li>
+                            <li>Avocado 🥑</li>
+                        </ul>
+                    </div>
+                    <div class="recipe-section">
+                        <h5>Instructions</h5>
+                        <ol class="recipe-steps">
+                            <li>So you pour a little water on the gari and mix to soften it.</li>
+                            <li>Then you put a pan on fire with oil.</li>
+                            <li>Pour the cut vegetables into it.</li>
+                            <li>Add the sausage and stir for a bit.</li>
+                            <li>Stir add a little spice that’s to your satisfaction.</li>
+                            <li>Then you add the gari and stir.</li>
+                            <li>More stirring😌😌😌.</li>
+                            <li>You can prepare stew if you want then you add any protein of your choice.</li>
+                            <li>Garnish with the avocado</li>
+                            <li>Enjoy! Keep the fire extinguisher nearby just in case[Her recipe is not really that
+                                safe🤣🤣🤣].</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
