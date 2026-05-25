@@ -389,10 +389,10 @@
 
         .crystal {
             position: absolute;
-            width: 5px;
-            height: 10px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(229, 179, 163, 0.4));
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            width: 6px;
+            height: 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 170, 143, 0.85), rgba(212, 175, 55, 0.85));
+            box-shadow: 0 0 25px rgba(255, 170, 143, 0.9), 0 0 10px rgba(212, 175, 55, 0.6);
             clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
             transform-style: preserve-3d;
             animation: crystalFloat 8s linear infinite;
@@ -402,35 +402,37 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.4em;
-            color: var(--gold-accent);
+            color: #ffdb58;
+            text-shadow: 0 0 12px rgba(255, 219, 88, 0.8);
             margin-bottom: 1.5rem;
-            opacity: 0.8;
+            opacity: 1;
         }
 
         .countdown-title {
             color: #ffffff;
             font-family: var(--font-serif);
-            font-size: 4rem;
+            font-size: 4.2rem;
             font-weight: 300;
             margin-bottom: 1rem;
             text-align: center;
             letter-spacing: 0.01em;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.25), 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
         .countdown-title span {
             font-style: italic;
-            color: var(--rose-gold);
+            color: #ffaa8f;
+            text-shadow: 0 0 20px rgba(255, 170, 143, 0.8);
         }
 
         .countdown-subtitle {
-            color: #a8a2ad;
-            /* Brighter, more legible silver-purple */
+            color: #d6c8e3;
             font-family: var(--font-serif);
             font-style: italic;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             margin-bottom: 4.5rem;
             letter-spacing: 0.05em;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 0 15px rgba(214, 200, 227, 0.4), 0 2px 10px rgba(0, 0, 0, 0.4);
         }
 
         .timer-grid {
@@ -442,20 +444,23 @@
         }
 
         .time-card {
-            background: rgba(255, 255, 255, 0.05);
-            /* Increased luminosity */
-            border: 1px solid rgba(229, 179, 163, 0.25);
-            /* More defined border */
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 170, 143, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 28px;
             padding: 3rem 1.5rem;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+            box-shadow: 0 20px 60px rgba(255, 170, 143, 0.2),
                 inset 0 0 20px rgba(255, 255, 255, 0.05);
-            transition: transform 0.1s ease-out;
-            /* Smooth 3D Tilt */
+            transition: transform 0.1s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
             transform-style: preserve-3d;
+        }
+
+        .time-card:hover {
+            border-color: rgba(255, 219, 88, 0.7);
+            box-shadow: 0 25px 70px rgba(255, 219, 88, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.15);
         }
 
         .time-val {
@@ -487,32 +492,34 @@
         .time-val {
             font-size: 5rem;
             font-weight: 200;
-            /* Ultra-thin elegant typography styling */
             color: #ffffff;
             font-variant-numeric: tabular-nums;
             line-height: 1;
             margin-bottom: 0.75rem;
             letter-spacing: -0.02em;
-            text-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
-            /* Luminous glow */
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.8),
+                         0 0 25px rgba(255, 170, 143, 0.85),
+                         0 0 45px rgba(255, 170, 143, 0.55);
         }
 
         .time-lbl {
-            font-size: 0.7rem;
-            color: #b5acbd;
-            /* Lightened for better contrast */
+            font-size: 0.75rem;
+            color: #ffc4b3;
             text-transform: uppercase;
             letter-spacing: 0.3em;
-            font-weight: 400;
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(255, 196, 179, 0.5);
         }
 
         .decorative-shimmer {
-            font-size: 1.2rem;
-            color: var(--rose-gold);
+            font-size: 3.5rem;
+            color: #ffaa8f;
             margin-top: 5rem;
-            opacity: 0.4;
-            letter-spacing: 0.5em;
+            opacity: 0.95;
+            letter-spacing: 0.3em;
             animation: pulseFade 3s infinite ease-in-out;
+            text-shadow: 0 0 20px rgba(255, 170, 143, 0.85),
+                         0 0 40px rgba(255, 170, 143, 0.45);
         }
 
         /* ==========================================================================
@@ -1046,12 +1053,32 @@
 
             .treasure-grid {
                 grid-template-columns: 1fr;
-                grid-auto-rows: 300px;
+                grid-auto-rows: 350px;
+                gap: 1.5rem;
             }
 
-            .grid-item:nth-child(n) {
+            .grid-item.item-1,
+            .grid-item.item-2,
+            .grid-item.item-3,
+            .grid-item.item-4,
+            .grid-item.item-5,
+            .grid-item.item-6,
+            .grid-item.item-7,
+            .grid-item.item-8,
+            .grid-item.item-9,
+            .grid-item.item-10 {
                 grid-column: span 1 !important;
                 grid-row: span 1 !important;
+            }
+
+            /* Make the closing X stand out on mobile (placed over dark video/image) */
+            .gallery-close {
+                color: #ffffff !important;
+                background: rgba(0, 0, 0, 0.5) !important;
+                border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             }
 
             .messages-container {
@@ -1099,18 +1126,21 @@
 
         .treasure-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            grid-auto-rows: 250px;
-            grid-auto-flow: dense;
-            gap: 1.5rem;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 320px;
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .grid-item {
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(229, 179, 163, 0.15);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.02);
             cursor: pointer;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .grid-item::before {
@@ -1147,8 +1177,9 @@
         }
 
         .grid-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 70px rgba(44, 37, 35, 0.1);
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--rose-gold);
+            box-shadow: 0 30px 60px rgba(229, 179, 163, 0.18);
         }
 
         .grid-item:hover::before {
@@ -1160,41 +1191,39 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
-        /* High-End Architectural Frames (Classy Arches & Squovals) */
-        .grid-item:nth-child(4n+1) {
-            border-radius: 200px 200px 40px 40px;
-            /* Grand Arch */
-        }
+        /* Explicit Grid-Item Metro Layout Spans (Perfect Asymmetric Balance) */
+        .grid-item.item-1 { grid-column: span 1; grid-row: span 1; }
+        .grid-item.item-2 { grid-column: span 1; grid-row: span 2; }
+        .grid-item.item-3 { grid-column: span 1; grid-row: span 1; }
+        .grid-item.item-4 { grid-column: span 1; grid-row: span 1; }
+        .grid-item.item-5 { grid-column: span 2; grid-row: span 1; }
+        .grid-item.item-6 { grid-column: span 1; grid-row: span 1; }
+        .grid-item.item-7 { grid-column: span 1; grid-row: span 2; }
+        .grid-item.item-8 { grid-column: span 2; grid-row: span 1; }
+        .grid-item.item-9 { grid-column: span 1; grid-row: span 1; }
+        .grid-item.item-10 { grid-column: span 2; grid-row: span 1; }
 
-        .grid-item:nth-child(4n+2) {
-            border-radius: 40px 220px 40px 220px;
-            /* Dramatic Asymmetric */
-            grid-row: span 2;
+        /* Highly Curated Architectural Shapes for Luxury Feel */
+        .arch-frame {
+            border-radius: 180px 180px 30px 30px;
         }
-
-        .grid-item:nth-child(4n+3) {
-            border-radius: 220px 40px 220px 40px;
-            /* Inverse Dramatic */
-            grid-column: span 2;
+        .tall-pill-frame {
+            border-radius: 120px;
         }
-
-        .grid-item:nth-child(4n+4) {
-            border-radius: 100px;
-            /* Soft Luxury Pill */
+        .pill-frame {
+            border-radius: 60px;
         }
-
-        .grid-item {
-            border: 1px solid rgba(229, 179, 163, 0.1);
+        .asym-frame-1 {
+            border-radius: 40px 180px 40px 180px;
         }
-
-        /* Specific Spans for Variety */
-        .grid-item:nth-child(5) {
-            grid-row: span 2;
-            grid-column: span 1;
+        .asym-frame-2 {
+            border-radius: 180px 40px 180px 40px;
         }
-
-        .grid-item:nth-child(7) {
-            grid-column: span 2;
+        .landscape-frame-1 {
+            border-radius: 30px 120px 30px 120px;
+        }
+        .landscape-frame-2 {
+            border-radius: 120px 30px 120px 30px;
         }
 
         .grid-item img,
@@ -1403,7 +1432,7 @@
             left: 0;
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(229, 179, 163, 0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 170, 143, 0.16) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 2;
@@ -1737,16 +1766,23 @@
 
         .visualizer {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
             gap: 2.5px;
             height: 18px;
             opacity: 0;
             transition: all 0.4s ease;
             position: absolute;
-            top: 52%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+        }
+
+        .bar {
+            width: 3px;
+            background-color: #f28b30;
+            border-radius: 3px;
+            height: 4px;
         }
 
         #audio-controller.playing {
@@ -1828,8 +1864,8 @@
         #audio-controller.playing .bar:nth-child(6) { animation-delay: 0.5s; }
 
         @keyframes musicWave {
-            0% { height: 4px; }
-            100% { height: 100%; }
+            0% { height: 4px; opacity: 0.7; }
+            100% { height: 18px; opacity: 1; }
         }
 
         /* [NEW] CONCLUSION SECTION STYLING */
@@ -1907,8 +1943,8 @@
                 <div id="music-hint" class="music-hint-tooltip">Tap for Music 🎵</div>
             </div>
             <div id="song-info">
-                <span class="song-name">Rush</span>
-                <span class="artist-name">Ayra Starr</span>
+                <span class="song-name">Adenuga</span>
+                <span class="artist-name">Joeboy feat Qing Madi</span>
             </div>
             <div class="mobile-toggle" onclick="toggleMobileMenu()">
                 <span></span>
@@ -1954,7 +1990,7 @@
             </div>
         </div>
 
-        <div class="decorative-shimmer">✦ 🎂 ✦</div>
+        <div class="decorative-shimmer">✨ 🎂 ✨</div>
     </section>
 
     <main id="main-content">
@@ -1983,7 +2019,7 @@
                     <img src="essence0.png" class="photo-card" alt="About Bervelyn 0">
                     <img src="essence1.png" class="photo-card" alt="About Bervelyn 1">
                     <img src="essence2.jpg" class="photo-card" alt="About Bervelyn 2">
-                    <img src="essence99.jpg" class="photo-card" alt="About Bervelyn 3">
+                    <img src="essence.jpg" class="photo-card" alt="About Bervelyn 3">
                 </div>
                 <div class="profile-text">
                     <h2 class="section-title parallax" data-speed="0.2">The Essence of Bervelyn</h2>
@@ -2192,44 +2228,44 @@
                 style="text-align: center; margin-top: -5rem; margin-bottom: 5rem; color: var(--rose-gold); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.3em; opacity: 0.7;">
                 ✦ Click any moment to explore the memory ✦</p>
             <div class="treasure-grid">
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item arch-frame item-1" onclick="openGallery(this)">
                     <img src="gallery1.jpg" alt="Moment 1" data-title="Fake life😌"
                         data-desc="Fake it till you make it 🥲. I really don't know what you were doing here but it's funny how your supposed piercing looks more like a dent up close🤣">
                 </div>
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item tall-pill-frame item-2" onclick="openGallery(this)">
                     <img src="gallery2.jpg" alt="Moment 2" data-title="Unmatched Elegance😌"
                         data-desc="When you wore Cinderella's glass slippers 🥹">
                 </div>
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item asym-frame-1 item-3" onclick="openGallery(this)">
                     <img src="gallery3.jpg" alt="Moment 3" data-title="The Chef's Own Delight"
                         data-desc="I really wish you made more of these often so that us, the indomie spammers, may learn from from you 🥲.">
                 </div>
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item pill-frame item-4" onclick="openGallery(this)">
                     <img src="gallery4.jpg" alt="Moment 4" data-title="The Pavillion😭😭😭🤧"
                         data-desc="You wicked soul🥲. Will it kill you to bring it back to school???? The memory is not even about your weird-looking drawings anymore 🤣🤣🤣">
                 </div>
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item landscape-frame-1 item-5" onclick="openGallery(this)">
                     <img src="gallery5.jpg" alt="Moment 5" data-title="Simply Delightful🥹"
                         data-desc="She claims she made fried rice with of tumeric instead of soy sauce 😌. Truth is, it tasted so bad she had to add stew to neutralize it 🤣🤣🤣.">
                 </div>
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item arch-frame item-6" onclick="openGallery(this)">
                     <img src="gallery6.jpg" alt="Moment 6" data-title="Classic Bervelyn😅"
                         data-desc="This is arguably the best drawing she has ever made 🤣🤣🤣. Apart from the first one, I don't think I can identify any others worth even a pesewa 🥲[Not that the first was any good, though]">
                 </div>
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item tall-pill-frame item-7" onclick="openGallery(this)">
                     <img src="gallery7.jpg" alt="Moment 7" data-title="Poetic 🥹"
                         data-desc="Till date, no one knows exactly what you were doing here 🤣🤣🤣. You were sort of reading a book, and then out of boredom you drew your back, and then a teddy to kind of, continue reading your book for you. On some poetic shakespear shit😅">
                 </div>
                 <!-- [NEW] VIDEO ITEMS -->
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item landscape-frame-2 item-8" onclick="openGallery(this)">
                     <video src="vid1.mp4" muted loop playsinline data-title="Ayra Starr's Biggest Fan"
                         data-desc="Many are mad, but few are roaming 🤣🤣🤣 It took me 2 days to figure out she was actually trying to sing 🥲. Ayra starr would be so proud of you🥹🤧"></video>
                 </div>
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item asym-frame-2 item-9" onclick="openGallery(this)">
                     <video src="vid2.mp4" muted loop playsinline data-title="The Glory days😁😁😁"
                         data-desc="I'm guessing this is when your glow up officially started 🥹 Oh my God, look at those cheeks 🤣🤣🤣"></video>
                 </div>
-                <div class="grid-item" onclick="openGallery(this)">
+                <div class="grid-item landscape-frame-1 item-10" onclick="openGallery(this)">
                     <video src="vid3.mp4" muted loop playsinline data-title="Your dream mansion"
                         data-desc="For some weird reason, she didn't want to sell it to me 🥲. Nonetheless, I pity whoever bought that house😅 They paid for no water, no light and a very likely fire hazard 🤣🤣🤣"></video>
                 </div>
@@ -2497,9 +2533,9 @@
                     this.isHeart = true;
                     this.alpha = 1.0;
                 } else {
-                    this.color = Math.random() > 0.7 ? '#e5b3a3' : '#ffffff';
+                    this.color = Math.random() > 0.7 ? '#ffaa8f' : (Math.random() > 0.5 ? '#ffe5b4' : '#ffffff');
                     this.isHeart = Math.random() > 0.85;
-                    this.alpha = Math.random() * 0.5 + 0.2;
+                    this.alpha = Math.random() * 0.6 + 0.35;
                 }
 
                 this.bloomPhase = Math.random() * Math.PI * 2;
@@ -2740,11 +2776,11 @@
                     audioCtrl.classList.add('pulse');
                     musicHint.classList.add('visible');
 
-                    // Auto-hide hint after 10 seconds if not clicked
+                    // Auto-hide hint after 25 seconds if not clicked
                     setTimeout(() => {
                         musicHint.classList.remove('visible');
                         audioCtrl.classList.remove('pulse');
-                    }, 10000);
+                    }, 25000);
                 }
             }, 3000); // 3 seconds after celebration starts
         }
