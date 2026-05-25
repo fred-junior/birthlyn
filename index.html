@@ -2317,46 +2317,47 @@
         let cursorX = 0, cursorY = 0;
         let ringX = 0, ringY = 0;
 
+        let isHovering = false;
+        let isHoveringHeart = false;
+
         window.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
 
-            // Immediate dot movement
-            cursorDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
-
-            // Update the aura position
-            aura.style.left = e.clientX + 'px';
-            aura.style.top = e.clientY + 'px';
-
-            // Check for interactive elements for cursor state
+            // Check for interactive elements for cursor state (cached in event target)
             const target = e.target;
-            const isInteractive = target.closest('a, button, .grid-item, .slider-card, .logo, .modal-close');
-            if (isInteractive) {
+            isHovering = !!target.closest('a, button, .grid-item, .slider-card, .logo, .modal-close');
+
+            // Check for hover over the unique secret red heart using fast squared distance
+            isHoveringHeart = false;
+            particles.forEach(p => {
+                if (p.isRedSecret) {
+                    const dx = e.clientX - p.x;
+                    const dy = e.clientY - p.y;
+                    if ((dx * dx + dy * dy) < 1600) isHoveringHeart = true; // 40^2 = 1600
+                }
+            });
+        });
+
+        // Smooth trailing effect for the ring (LERP) and GPU accelerated positioning
+        function updateCursor() {
+            // Apply mouse positions using GPU layers (translate3d)
+            cursorDot.style.transform = `translate3d(${mouse.x - 3}px, ${mouse.y - 3}px, 0)`;
+            aura.style.transform = `translate3d(${mouse.x}px, ${mouse.y}px, 0) translate(-50%, -50%)`;
+
+            if (isHovering || isHoveringHeart) {
                 cursorRing.classList.add('hover');
             } else {
                 cursorRing.classList.remove('hover');
             }
 
-            // Check for hover over the unique secret red heart
-            let isHoveringHeart = false;
-            particles.forEach(p => {
-                if (p.isRedSecret) {
-                    const dx = e.clientX - p.x;
-                    const dy = e.clientY - p.y;
-                    if (Math.sqrt(dx * dx + dy * dy) < 40) isHoveringHeart = true;
-                }
-            });
-            // We still use pointer-events: none on cursor elements, but we change cursor style for visual feedback
-            if (isHoveringHeart) cursorRing.classList.add('hover');
-        });
-
-        // Smooth trailing effect for the ring (LERP)
-        function updateCursor() {
             const lerp = 0.15;
             ringX += (mouse.x - ringX) * lerp;
             ringY += (mouse.y - ringY) * lerp;
 
-            cursorRing.style.transform = `translate(${ringX - cursorRing.offsetWidth / 2}px, ${ringY - cursorRing.offsetHeight / 2}px)`;
+            // Avoid offsetWidth reads in the loop (ring is 38px, hovered is 60px)
+            const halfSize = cursorRing.classList.contains('hover') ? 30 : 19;
+            cursorRing.style.transform = `translate3d(${ringX - halfSize}px, ${ringY - halfSize}px, 0)`;
 
             requestAnimationFrame(updateCursor);
         }
@@ -2371,7 +2372,7 @@
             parallaxElements.forEach(el => {
                 const speed = el.getAttribute('data-speed');
                 const yPos = -(scrolled * speed);
-                el.style.transform = `translateY(${yPos}px)`;
+                el.style.transform = `translate3d(0, ${yPos}px, 0)`;
             });
             requestAnimationFrame(updateParallax);
         }
@@ -2541,31 +2542,34 @@
                 this.bloomPhase = Math.random() * Math.PI * 2;
             }
             draw() {
-                ctx.globalAlpha = this.alpha;
                 ctx.fillStyle = this.color;
                 if (this.isRedSecret) {
-                    ctx.shadowBlur = 20;
-                    ctx.shadowColor = '#ff3333';
+                    // Hardware accelerated layered heart glow (no shadowBlur)
+                    ctx.globalAlpha = this.alpha * 0.3;
+                    this.drawHeart(this.x, this.y, this.size * 4);
+                    ctx.globalAlpha = this.alpha;
                     this.drawHeart(this.x, this.y, this.size * 2.5);
-                    ctx.shadowBlur = 0;
                 } else if (this.isGolden) {
-                    ctx.shadowBlur = 15;
-                    ctx.shadowColor = '#d4af37';
+                    // Hardware accelerated gold glow
+                    ctx.globalAlpha = this.alpha * 0.25;
+                    this.drawHeart(this.x, this.y, this.size * 3.8);
+                    ctx.globalAlpha = this.alpha;
                     this.drawHeart(this.x, this.y, this.size * 2.5);
-                    ctx.shadowBlur = 0;
                 } else if (this.isHeart) {
+                    ctx.globalAlpha = this.alpha;
                     this.drawHeart(this.x, this.y, this.size * 2.5);
                 } else {
+                    // Hardware accelerated starlight glow
+                    if (this.size > 2) {
+                        ctx.globalAlpha = this.alpha * 0.25;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 3.5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.globalAlpha = this.alpha;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
-                    // Glow for larger ones
-                    if (this.size > 2) {
-                        ctx.shadowBlur = 10;
-                        ctx.shadowColor = this.color;
-                        ctx.fill();
-                        ctx.shadowBlur = 0;
-                    }
                 }
             }
             drawHeart(x, y, size) {
@@ -2580,18 +2584,20 @@
             update() {
                 let dx = mouse.x - this.x;
                 let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-
-                // Physics constants
+                let distSq = dx * dx + dy * dy;
+                
+                // Avoid Math.sqrt calculations for far away stars
                 let maxDist = this.isGolden ? 650 : 550;
-                let force = (maxDist - distance) / maxDist;
-                if (force < 0) force = 0;
+                let maxDistSq = maxDist * maxDist;
 
-                // Influence: Pull toward mouse if close
-                if (distance < maxDist) {
-                    let strength = (this.isGolden || this.isRedSecret) ? 2.5 : 1.8;
-                    this.vx += (dx / distance) * force * strength;
-                    this.vy += (dy / distance) * force * strength;
+                if (distSq < maxDistSq) {
+                    let distance = Math.sqrt(distSq);
+                    if (distance > 0) {
+                        let force = (maxDist - distance) / maxDist;
+                        let strength = (this.isGolden || this.isRedSecret) ? 2.5 : 1.8;
+                        this.vx += (dx / distance) * force * strength;
+                        this.vy += (dy / distance) * force * strength;
+                    }
                 }
 
                 // Spring back to base position logic
@@ -2643,8 +2649,11 @@
         // ==========================================================================
         // COUNTDOWN SCHEDULER & TIMING CONTROL ENGINE
         // ==========================================================================
+        let test = 0; // Set to non-zero (e.g. 1) to test a quick 10-second countdown
         const bdayYear = new Date().getFullYear();
-        const bdayDate = new Date(`June 18, ${bdayYear} 00:00:00`).getTime();
+        const bdayDate = test !== 0 
+            ? (new Date().getTime() + 10 * 1000) 
+            : new Date(`June 18, ${bdayYear} 00:00:00`).getTime();
 
         const countdownScreen = document.getElementById('countdown-screen');
         const bodyEl = document.body;
@@ -2674,8 +2683,8 @@
         refreshClock();
 
         // --- 3D TILT LOGIC ---
+        const tiltCards = document.querySelectorAll('.time-card');
         countdownScreen.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('.time-card');
             const { clientX, clientY } = e;
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
@@ -2683,15 +2692,14 @@
             const rotateX = (clientY - centerY) / 25;
             const rotateY = (clientX - centerX) / 25;
 
-            cards.forEach(card => {
-                card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+            tiltCards.forEach(card => {
+                card.style.transform = `perspective(1000px) rotate3d(1, 0, 0, ${-rotateX}deg) rotate3d(0, 1, 0, ${rotateY}deg)`;
             });
         });
 
         countdownScreen.addEventListener('mouseleave', () => {
-            const cards = document.querySelectorAll('.time-card');
-            cards.forEach(card => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            tiltCards.forEach(card => {
+                card.style.transform = `perspective(1000px) rotate3d(1, 0, 0, 0deg) rotate3d(0, 1, 0, 0deg)`;
             });
         });
 
@@ -2786,11 +2794,11 @@
         }
 
         // --- DEVELOPMENT OVERRIDE SHORTCUT ---
-        // Typing "fred" simulates time hitting zero instantly!
+        // Typing "fredisawesome" simulates time hitting zero instantly!
         let triggerBuffer = "";
         window.addEventListener('keydown', (e) => {
             triggerBuffer += e.key.toLowerCase();
-            if (triggerBuffer.endsWith('fred')) {
+            if (triggerBuffer.endsWith('fredisawesome')) {
                 clearInterval(clockInterval);
                 executeBloomCelebration();
                 triggerBuffer = "";
