@@ -120,7 +120,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 2.5rem 5rem;
+            padding: 1.5rem 5rem;
             z-index: 1000;
             transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
@@ -153,7 +153,7 @@
 
         nav {
             display: flex;
-            gap: 2.5rem;
+            gap: 1.8rem;
         }
 
         /* [NEW] PREMIUM HAMBURGER MENU */
@@ -285,9 +285,9 @@
         nav a {
             color: rgba(255, 255, 255, 0.5);
             text-decoration: none;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.15em;
             font-weight: 400;
             transition: color 0.3s, transform 0.3s;
         }
@@ -1649,27 +1649,27 @@
         }
 
         #audio-controller {
-            /* [FIXED] Removed fixed positioning to prevent overlap with nav */
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(229, 179, 163, 0.3);
             backdrop-filter: blur(15px);
-            padding: 0.6rem 1.2rem;
-            border-radius: 50px;
+            border-radius: 50%;
             cursor: pointer;
             transition: all 0.4s ease;
             opacity: 0;
             pointer-events: none;
-            transform: translateY(-10px);
             z-index: 2000;
+            position: relative;
         }
 
         .nav-container {
             display: flex;
             align-items: center;
-            gap: 3.5rem;
+            gap: 2rem;
         }
 
         body.celebrate-active #audio-controller {
@@ -1684,11 +1684,7 @@
         }
 
         #audio-status {
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            color: #ffffff;
-            transition: color 0.3s;
+            display: none;
         }
 
         body.celebrate-active #audio-status {
@@ -1742,41 +1738,98 @@
         .visualizer {
             display: flex;
             align-items: flex-end;
-            gap: 2px;
-            height: 12px;
+            justify-content: center;
+            gap: 2.5px;
+            height: 18px;
+            opacity: 0;
+            transition: all 0.4s ease;
+            position: absolute;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        .visualizer .bar {
-            width: 2px;
-            background: var(--rose-gold);
-            height: 4px;
-            transition: height 0.3s ease;
+        #audio-controller.playing {
+            border-color: var(--rose-gold);
+            background: rgba(229, 179, 163, 0.1);
+        }
+
+        #audio-controller.playing::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--rose-gold);
+            animation: controllerEcho 2s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes controllerEcho {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        #audio-controller.playing .visualizer {
+            opacity: 1;
+        }
+
+        .music-note-icon {
+            color: var(--rose-gold);
+            transition: all 0.4s ease;
+        }
+
+        #audio-controller:hover .music-note-icon {
+            transform: scale(1.1);
+        }
+
+        #audio-controller.playing .music-note-icon {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        #song-info {
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.6rem;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-align: right;
+            pointer-events: none;
+            line-height: 1.2;
+        }
+
+        #audio-controller.playing ~ #song-info {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .song-name {
+            display: block;
+            font-weight: 700;
+            color: var(--rose-gold);
+        }
+
+        .artist-name {
+            display: block;
+            opacity: 0.6;
         }
 
         #audio-controller.playing .bar {
             animation: musicWave 0.8s ease-in-out infinite alternate;
         }
 
-        #audio-controller.playing .bar:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        #audio-controller.playing .bar:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        #audio-controller.playing .bar:nth-child(4) {
-            animation-delay: 0.1s;
-        }
+        #audio-controller.playing .bar:nth-child(2) { animation-delay: 0.2s; }
+        #audio-controller.playing .bar:nth-child(3) { animation-delay: 0.4s; }
+        #audio-controller.playing .bar:nth-child(4) { animation-delay: 0.1s; }
+        #audio-controller.playing .bar:nth-child(5) { animation-delay: 0.3s; }
+        #audio-controller.playing .bar:nth-child(6) { animation-delay: 0.5s; }
 
         @keyframes musicWave {
-            from {
-                height: 4px;
-            }
-
-            to {
-                height: 12px;
-            }
+            0% { height: 4px; }
+            100% { height: 100%; }
         }
 
         /* [NEW] CONCLUSION SECTION STYLING */
@@ -1831,13 +1884,20 @@
         <div class="logo">For <span>Bervelyn</span></div>
         <div class="nav-container">
             <nav id="main-nav">
-                <a href="#home" onclick="closeMobileMenu()">Home </a>
-                <a href="#about" onclick="closeMobileMenu()">About Her 💅🏼</a>
-                <a href="#chat" onclick="closeMobileMenu()">Theories of Bervelyn 💭</a>
-                <a href="#gallery" onclick="closeMobileMenu()">Gallery 📸</a>
+                <a href="#home" onclick="closeMobileMenu()">Home</a>
+                <a href="#about" onclick="closeMobileMenu()">About Her</a>
+                <a href="#chat" onclick="closeMobileMenu()">Thoughts</a>
+                <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
             </nav>
             <div id="audio-controller" onclick="toggleAudio()" title="Play/Pause Background Music">
+                <div class="music-note-icon">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                </div>
                 <div class="visualizer">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
                     <div class="bar"></div>
                     <div class="bar"></div>
                     <div class="bar"></div>
@@ -1845,6 +1905,10 @@
                 </div>
                 <span id="audio-status">MUSIC: OFF</span>
                 <div id="music-hint" class="music-hint-tooltip">Tap for Music 🎵</div>
+            </div>
+            <div id="song-info">
+                <span class="song-name">Rush</span>
+                <span class="artist-name">Ayra Starr</span>
             </div>
             <div class="mobile-toggle" onclick="toggleMobileMenu()">
                 <span></span>
@@ -1857,11 +1921,11 @@
     <div id="mobile-overlay">
         <a href="#home" class="overlay-nav-link" onclick="closeMobileMenu()">Home</a>
         <div class="overlay-divider"></div>
-        <a href="#about" class="overlay-nav-link" onclick="closeMobileMenu()">About Her 💅🏼</a>
+        <a href="#about" class="overlay-nav-link" onclick="closeMobileMenu()">About Her</a>
         <div class="overlay-divider"></div>
-        <a href="#chat" class="overlay-nav-link" onclick="closeMobileMenu()">Theories 💭</a>
+        <a href="#chat" class="overlay-nav-link" onclick="closeMobileMenu()">Thoughts</a>
         <div class="overlay-divider"></div>
-        <a href="#gallery" class="overlay-nav-link" onclick="closeMobileMenu()">Gallery 📸</a>
+        <a href="#gallery" class="overlay-nav-link" onclick="closeMobileMenu()">Gallery</a>
         <div class="overlay-signature">Bervelyn</div>
     </div>
 
@@ -2690,7 +2754,7 @@
         let triggerBuffer = "";
         window.addEventListener('keydown', (e) => {
             triggerBuffer += e.key.toLowerCase();
-            if (triggerBuffer.endsWith('fredisawesome')) {
+            if (triggerBuffer.endsWith('fred')) {
                 clearInterval(clockInterval);
                 executeBloomCelebration();
                 triggerBuffer = "";
