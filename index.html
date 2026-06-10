@@ -181,8 +181,14 @@
             transform-origin: center;
         }
 
-        .mobile-toggle span:nth-child(1) { width: 22px; }
-        .mobile-toggle span:nth-child(2) { width: 14px; align-self: flex-end; }
+        .mobile-toggle span:nth-child(1) {
+            width: 22px;
+        }
+
+        .mobile-toggle span:nth-child(2) {
+            width: 14px;
+            align-self: flex-end;
+        }
 
         body.celebrate-active .mobile-toggle span {
             background: rgba(44, 37, 35, 0.7);
@@ -193,6 +199,7 @@
             transform: rotate(45deg) translate(4px, 4px);
             background: var(--rose-gold);
         }
+
         .mobile-toggle.active span:nth-child(2) {
             width: 20px;
             transform: rotate(-45deg) translate(4px, -4px);
@@ -244,10 +251,21 @@
             transform: translateY(0);
         }
 
-        #mobile-overlay.active .overlay-nav-link:nth-child(1) { transition-delay: 0.1s; }
-        #mobile-overlay.active .overlay-nav-link:nth-child(2) { transition-delay: 0.18s; }
-        #mobile-overlay.active .overlay-nav-link:nth-child(3) { transition-delay: 0.26s; }
-        #mobile-overlay.active .overlay-nav-link:nth-child(4) { transition-delay: 0.34s; }
+        #mobile-overlay.active .overlay-nav-link:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+
+        #mobile-overlay.active .overlay-nav-link:nth-child(2) {
+            transition-delay: 0.18s;
+        }
+
+        #mobile-overlay.active .overlay-nav-link:nth-child(3) {
+            transition-delay: 0.26s;
+        }
+
+        #mobile-overlay.active .overlay-nav-link:nth-child(4) {
+            transition-delay: 0.34s;
+        }
 
         .overlay-nav-link:hover {
             color: var(--rose-gold);
@@ -411,7 +429,7 @@
         .countdown-title {
             color: #ffffff;
             font-family: var(--font-serif);
-            font-size: 4.2rem;
+            font-size: clamp(2rem, 5.5vw, 4.2rem);
             font-weight: 300;
             margin-bottom: 1rem;
             text-align: center;
@@ -490,7 +508,7 @@
         }
 
         .time-val {
-            font-size: 5rem;
+            font-size: clamp(3rem, 7vw, 5rem);
             font-weight: 200;
             color: #ffffff;
             font-variant-numeric: tabular-nums;
@@ -498,8 +516,8 @@
             margin-bottom: 0.75rem;
             letter-spacing: -0.02em;
             text-shadow: 0 0 12px rgba(255, 255, 255, 0.8),
-                         0 0 25px rgba(255, 170, 143, 0.85),
-                         0 0 45px rgba(255, 170, 143, 0.55);
+                0 0 25px rgba(255, 170, 143, 0.85),
+                0 0 45px rgba(255, 170, 143, 0.55);
         }
 
         .time-lbl {
@@ -519,7 +537,7 @@
             letter-spacing: 0.3em;
             animation: pulseFade 3s infinite ease-in-out;
             text-shadow: 0 0 20px rgba(255, 170, 143, 0.85),
-                         0 0 40px rgba(255, 170, 143, 0.45);
+                0 0 40px rgba(255, 170, 143, 0.45);
         }
 
         /* ==========================================================================
@@ -567,7 +585,7 @@
         }
 
         .hero-text h1 {
-            font-size: 5.5rem;
+            font-size: clamp(2.8rem, 6vw, 5.5rem);
             color: var(--text-dark);
             font-family: var(--font-serif);
             line-height: 1.05;
@@ -924,7 +942,7 @@
 
         .memory-title {
             font-family: var(--font-serif);
-            font-size: 2.8rem;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
             color: var(--text-dark);
             margin-bottom: 2rem;
             line-height: 1.1;
@@ -962,6 +980,90 @@
             color: #fff;
         }
 
+        /* [NEW] 14-inch / 16-inch Laptop Optimization */
+        @media (max-width: 1600px) {
+            .section-padding {
+                padding: 7rem 4.5rem;
+            }
+
+            .hero-section {
+                padding: 2rem 4.5rem;
+                max-width: 1250px;
+            }
+
+            .hero-text h1 {
+                font-size: clamp(3rem, 5.5vw, 4.8rem);
+            }
+
+            .graphic-frame {
+                width: 400px;
+                height: 500px;
+            }
+        }
+
+        /* [NEW] 13-inch Laptop & Intermediate Screen Optimization */
+        @media (max-width: 1440px) {
+            .section-padding {
+                padding: 6rem 4rem;
+            }
+
+            .hero-section {
+                padding: 2rem 4rem;
+                max-width: 1200px;
+            }
+
+            .graphic-frame {
+                width: 380px;
+                height: 480px;
+            }
+
+            .hero-text {
+                padding-right: 3rem;
+            }
+
+            .timer-grid {
+                gap: 1.5rem;
+            }
+
+            header {
+                padding: 1.5rem 3rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .section-padding {
+                padding: 5rem 3rem;
+            }
+
+            .hero-section {
+                padding: 2rem 3rem;
+                gap: 3rem;
+            }
+
+            .graphic-frame {
+                width: 320px;
+                height: 400px;
+            }
+
+            .profile-layout {
+                gap: 3rem;
+            }
+
+            .treasure-grid {
+                gap: 1.5rem;
+            }
+
+            .chat-slider {
+                padding: 2rem 3rem 4rem 3rem;
+            }
+
+            .messages-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+
         @media (max-width: 1024px) {
             .gallery-modal-content {
                 flex-direction: column;
@@ -986,8 +1088,13 @@
 
         /* Mobile / Tablet Responsiveness */
         @media (max-width: 1024px) {
-            .section-padding { padding: 5rem 2rem; }
-            .hero-section { padding: 4rem 2rem; }
+            .section-padding {
+                padding: 5rem 2rem;
+            }
+
+            .hero-section {
+                padding: 4rem 2rem;
+            }
 
             .profile-layout {
                 grid-template-columns: 1fr;
@@ -1100,7 +1207,7 @@
 
         .profile-text h2 {
             font-family: var(--font-serif);
-            font-size: 3.5rem;
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
             color: var(--text-dark);
             margin-bottom: 2.5rem;
             font-weight: 300;
@@ -1119,7 +1226,7 @@
         .section-title {
             text-align: center;
             font-family: var(--font-serif);
-            font-size: 3.5rem;
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
             color: var(--text-dark);
             margin-bottom: 6rem;
             font-weight: 300;
@@ -1193,37 +1300,86 @@
         }
 
         /* Explicit Grid-Item Metro Layout Spans (Perfect Asymmetric Balance) */
-        .grid-item.item-1 { grid-column: span 1; grid-row: span 1; }
-        .grid-item.item-2 { grid-column: span 1; grid-row: span 2; }
-        .grid-item.item-3 { grid-column: span 1; grid-row: span 1; }
-        .grid-item.item-4 { grid-column: span 1; grid-row: span 1; }
-        .grid-item.item-5 { grid-column: span 2; grid-row: span 1; }
-        .grid-item.item-6 { grid-column: span 1; grid-row: span 1; }
-        .grid-item.item-7 { grid-column: span 1; grid-row: span 2; }
-        .grid-item.item-8 { grid-column: span 2; grid-row: span 1; }
-        .grid-item.item-9 { grid-column: span 1; grid-row: span 1; }
-        .grid-item.item-10 { grid-column: span 2; grid-row: span 1; }
-        .grid-item.item-11 { grid-column: span 3; grid-row: span 1; }
+        .grid-item.item-1 {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .grid-item.item-2 {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .grid-item.item-3 {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .grid-item.item-4 {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .grid-item.item-5 {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .grid-item.item-6 {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .grid-item.item-7 {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .grid-item.item-8 {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .grid-item.item-9 {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .grid-item.item-10 {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .grid-item.item-11 {
+            grid-column: span 3;
+            grid-row: span 1;
+        }
 
         /* Highly Curated Architectural Shapes for Luxury Feel */
         .arch-frame {
             border-radius: 180px 180px 30px 30px;
         }
+
         .tall-pill-frame {
             border-radius: 120px;
         }
+
         .pill-frame {
             border-radius: 60px;
         }
+
         .asym-frame-1 {
             border-radius: 40px 180px 40px 180px;
         }
+
         .asym-frame-2 {
             border-radius: 180px 40px 180px 40px;
         }
+
         .landscape-frame-1 {
             border-radius: 30px 120px 30px 120px;
         }
+
         .landscape-frame-2 {
             border-radius: 120px 30px 120px 30px;
         }
@@ -1547,7 +1703,7 @@
         .chat-header-title {
             text-align: center;
             font-family: var(--font-serif);
-            font-size: 3.5rem;
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
             color: var(--text-dark);
             margin-bottom: 5rem;
             font-weight: 300;
@@ -1730,9 +1886,17 @@
         }
 
         @keyframes controllerPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .music-hint-tooltip {
@@ -1804,8 +1968,15 @@
         }
 
         @keyframes controllerEcho {
-            0% { transform: scale(1); opacity: 0.5; }
-            100% { transform: scale(1.8); opacity: 0; }
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1.8);
+                opacity: 0;
+            }
         }
 
         #audio-controller.playing .visualizer {
@@ -1839,7 +2010,7 @@
             line-height: 1.2;
         }
 
-        #audio-controller.playing ~ #song-info {
+        #audio-controller.playing~#song-info {
             opacity: 1;
             transform: translateX(0);
         }
@@ -1859,15 +2030,36 @@
             animation: musicWave 0.8s ease-in-out infinite alternate;
         }
 
-        #audio-controller.playing .bar:nth-child(2) { animation-delay: 0.2s; }
-        #audio-controller.playing .bar:nth-child(3) { animation-delay: 0.4s; }
-        #audio-controller.playing .bar:nth-child(4) { animation-delay: 0.1s; }
-        #audio-controller.playing .bar:nth-child(5) { animation-delay: 0.3s; }
-        #audio-controller.playing .bar:nth-child(6) { animation-delay: 0.5s; }
+        #audio-controller.playing .bar:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        #audio-controller.playing .bar:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        #audio-controller.playing .bar:nth-child(4) {
+            animation-delay: 0.1s;
+        }
+
+        #audio-controller.playing .bar:nth-child(5) {
+            animation-delay: 0.3s;
+        }
+
+        #audio-controller.playing .bar:nth-child(6) {
+            animation-delay: 0.5s;
+        }
 
         @keyframes musicWave {
-            0% { height: 4px; opacity: 0.7; }
-            100% { height: 18px; opacity: 1; }
+            0% {
+                height: 4px;
+                opacity: 0.7;
+            }
+
+            100% {
+                height: 18px;
+                opacity: 1;
+            }
         }
 
         /* [NEW] CONCLUSION SECTION STYLING */
@@ -1930,7 +2122,8 @@
             <div id="audio-controller" onclick="toggleAudio()" title="Play/Pause Background Music">
                 <div class="music-note-icon">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                        <path
+                            d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
                     </svg>
                 </div>
                 <div class="visualizer">
@@ -2591,7 +2784,7 @@
                 let dx = mouse.x - this.x;
                 let dy = mouse.y - this.y;
                 let distSq = dx * dx + dy * dy;
-                
+
                 // Avoid Math.sqrt calculations for far away stars
                 let maxDist = this.isGolden ? 650 : 550;
                 let maxDistSq = maxDist * maxDist;
@@ -2657,8 +2850,8 @@
         // ==========================================================================
         let test = 0; // Set to non-zero (e.g. 1) to test a quick 10-second countdown
         const bdayYear = new Date().getFullYear();
-        const bdayDate = test !== 0 
-            ? (new Date().getTime() + 10 * 1000) 
+        const bdayDate = test !== 0
+            ? (new Date().getTime() + 10 * 1000)
             : new Date(`June 18, ${bdayYear} 00:00:00`).getTime();
 
         const countdownScreen = document.getElementById('countdown-screen');
